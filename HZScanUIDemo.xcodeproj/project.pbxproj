@@ -16,7 +16,8 @@
 		84AEA0E123861571005C6DA3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA0DF23861571005C6DA3 /* LaunchScreen.storyboard */; };
 		84AEA0E423861571005C6DA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA0E323861571005C6DA3 /* main.m */; };
 		84AEA0EC2386164F005C6DA3 /* HZScanUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA0EB2386164F005C6DA3 /* HZScanUIViewController.m */; };
-		84AEA0EE23867F45005C6DA3 /* cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA0ED23867F45005C6DA3 /* cover.png */; };
+		84AEA0F02386B1A4005C6DA3 /* IMG_9234.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA0EF2386B1A4005C6DA3 /* IMG_9234.PNG */; };
+		84AEA0F22386B1AA005C6DA3 /* IMG_9235.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA0F12386B1AA005C6DA3 /* IMG_9235.PNG */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +35,8 @@
 		84AEA0E323861571005C6DA3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		84AEA0EA2386164F005C6DA3 /* HZScanUIViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZScanUIViewController.h; sourceTree = "<group>"; };
 		84AEA0EB2386164F005C6DA3 /* HZScanUIViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZScanUIViewController.m; sourceTree = "<group>"; };
-		84AEA0ED23867F45005C6DA3 /* cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cover.png; sourceTree = "<group>"; };
+		84AEA0EF2386B1A4005C6DA3 /* IMG_9234.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_9234.PNG; sourceTree = "<group>"; };
+		84AEA0F12386B1AA005C6DA3 /* IMG_9235.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_9235.PNG; sourceTree = "<group>"; };
 		9BC8A8AAF8165577E5AE8956 /* Pods_HZScanUIDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HZScanUIDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC529E01C7517EB962F4A431 /* Pods-HZScanUIDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZScanUIDemo.release.xcconfig"; path = "Target Support Files/Pods-HZScanUIDemo/Pods-HZScanUIDemo.release.xcconfig"; sourceTree = "<group>"; };
 		FCA3FB99B72C1BB02951650B /* Pods-HZScanUIDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZScanUIDemo.debug.xcconfig"; path = "Target Support Files/Pods-HZScanUIDemo/Pods-HZScanUIDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -98,7 +100,8 @@
 				84AEA0D823861570005C6DA3 /* ViewController.m */,
 				84AEA0EA2386164F005C6DA3 /* HZScanUIViewController.h */,
 				84AEA0EB2386164F005C6DA3 /* HZScanUIViewController.m */,
-				84AEA0ED23867F45005C6DA3 /* cover.png */,
+				84AEA0EF2386B1A4005C6DA3 /* IMG_9234.PNG */,
+				84AEA0F12386B1AA005C6DA3 /* IMG_9235.PNG */,
 				84AEA0DA23861570005C6DA3 /* Main.storyboard */,
 				84AEA0DD23861571005C6DA3 /* Assets.xcassets */,
 				84AEA0DF23861571005C6DA3 /* LaunchScreen.storyboard */,
@@ -168,9 +171,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				84AEA0E123861571005C6DA3 /* LaunchScreen.storyboard in Resources */,
+				84AEA0F22386B1AA005C6DA3 /* IMG_9235.PNG in Resources */,
+				84AEA0F02386B1A4005C6DA3 /* IMG_9234.PNG in Resources */,
 				84AEA0DE23861571005C6DA3 /* Assets.xcassets in Resources */,
 				84AEA0DC23861570005C6DA3 /* Main.storyboard in Resources */,
-				84AEA0EE23867F45005C6DA3 /* cover.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
