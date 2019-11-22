@@ -147,10 +147,7 @@ float yt_sin(float angular) {
     // 注：微信二维码的扫描范围是整个屏幕，这里并没有做处理（可不用设置）;
 //    metadataOutput.rectOfInterest = CGRectMake(0.05, 0.2, 0.7, 0.6);
     
-    __block CGFloat y = 0;
-    __block CGFloat x = 0;
-    __block CGFloat h = 0;
-    __block CGFloat w = 0;
+    __block CGFloat y = 0, x = 0, h = 0, w = 0;
     CGFloat screenH = [UIScreen mainScreen].bounds.size.height;
     CGFloat screenW = [UIScreen mainScreen].bounds.size.width;
     // masonry 延迟一下，这里是0秒。就会得到frame，不过必须在block内部来s获取。
@@ -223,11 +220,29 @@ float yt_sin(float angular) {
     
     [self.captureSession stopRunning];
     if (img) {
+        UIImage *resultImg = [self yt_imageFromImage:img inRect:self.ARScanView.frame];
         HZContentShowViewController *contentShowVCtr = [HZContentShowViewController new];
-        contentShowVCtr.contetImage = img;
+        contentShowVCtr.contetImage = resultImg;
         [self.navigationController pushViewController:contentShowVCtr animated:true];
     }
     
+}
+
+- (UIImage *)yt_imageFromImage:(UIImage *)image inRect:(CGRect)rect{
+    
+    //把像 素rect 转化为 点rect（如无转化则按原图像素取部分图片）
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGFloat x = rect.origin.x * scale,
+    y = rect.origin.y * scale,
+    w = rect.size.width*scale,
+    h = rect.size.height * scale;
+    CGRect dianRect = CGRectMake(x, y, w, h);
+
+    //截取部分图片并生成新图片
+    CGImageRef sourceImageRef = [image CGImage];
+    CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, dianRect);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationUp];
+    return newImage;
 }
 
 // 显示是否要打开灯
