@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import <AVFoundation/AVFoundation.h>
 #include <math.h>
+#import "HZContentShowViewController.h"
 @interface HZScanUIViewController ()<AVCaptureMetadataOutputObjectsDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 @property (nonatomic, strong) UIView *bottomToolBar;
 @property (nonatomic, strong) UIButton *QRBtn;
@@ -201,6 +202,10 @@ float yt_sin(float angular) {
         AVMetadataMachineReadableCodeObject *obj = metadataObjects[0];
         NSLog(@"------%@",[obj stringValue]);
         [self.captureSession stopRunning];
+        //
+        HZContentShowViewController *contentShowVCtr = [HZContentShowViewController new];
+        contentShowVCtr.contentStr = [obj stringValue];
+        [self.navigationController pushViewController:contentShowVCtr animated:true];
     } else {
         NSLog(@"暂未识别出扫描的二维码");
     }
@@ -215,6 +220,14 @@ float yt_sin(float angular) {
     if (self.isARScan == false) return;
     UIImage *img = [self imageFromSampleBuffer:sampleBuffer];
     NSLog(@"--------------:%@", img);
+    
+    [self.captureSession stopRunning];
+    if (img) {
+        HZContentShowViewController *contentShowVCtr = [HZContentShowViewController new];
+        contentShowVCtr.contetImage = img;
+        [self.navigationController pushViewController:contentShowVCtr animated:true];
+    }
+    
 }
 
 // 显示是否要打开灯
