@@ -23,6 +23,9 @@
 @property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
 @property (nonatomic, strong) AVCaptureMetadataOutput *metadataOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+//
+@property (nonatomic, assign) BOOL isARScan;
+@property (nonatomic, strong) UIButton *torchBtn;
 @end
 
 @implementation HZScanUIViewController
@@ -95,6 +98,13 @@ float yt_sin(float angular) {
 
 
 - (void)setBaseUI {
+    [self.view addSubview:self.torchBtn];
+    [self.torchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.QRScanView.mas_bottom).offset(50);
+        make.centerX.mas_equalTo(self.QRScanView);
+        make.size.mas_equalTo(CGSizeMake(50, 50));
+    }];
+    
     //
     [self.view addSubview:self.bottomToolBar];
     [self.bottomToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -163,8 +173,9 @@ float yt_sin(float angular) {
    // 创建摄像数据输出流并将其添加到会话对象上,  --> 用于识别光线强弱
 //    self.videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
     [self.videoDataOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
+    [self.videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
     [self.captureSession addOutput:self.videoDataOutput];
-
+    
     // 6、添加摄像设备输入流到会话对象
     [self.captureSession addInput:deviceInput];
 
@@ -185,7 +196,7 @@ float yt_sin(float angular) {
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
-    NSLog(@"metadataObjects - - %@", metadataObjects);
+//    NSLog(@"metadataObjects - - %@", metadataObjects);
     if (metadataObjects != nil && metadataObjects.count > 0) {
         AVMetadataMachineReadableCodeObject *obj = metadataObjects[0];
         NSLog(@"------%@",[obj stringValue]);
@@ -197,9 +208,11 @@ float yt_sin(float angular) {
 
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 //AVCaptureVideoDataOutput获取实时图像，这个代理方法的回调频率很快，几乎与手机屏幕的刷新频率一样快
+// [connection setVideoOrientation:AVCaptureVideoOrientationPortrait] 会闪,所以我们不切换代理，只是在这里设置。
 -(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
-//    [self getBrightnessValue:sampleBuffer];
+    [self getBrightnessValue:sampleBuffer];
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    if (self.isARScan == false) return;
     UIImage *img = [self imageFromSampleBuffer:sampleBuffer];
     NSLog(@"--------------:%@", img);
 }
@@ -212,17 +225,45 @@ float yt_sin(float angular) {
         CFRelease(metadataDict);
         NSDictionary *exifMetadata = [[metadata objectForKey:(NSString *)kCGImagePropertyExifDictionary] mutableCopy];
         float brightnessValue = [[exifMetadata objectForKey:(NSString *)kCGImagePropertyExifBrightnessValue] floatValue];
-        NSLog(@"------=====%f",brightnessValue);
+//        NSLog(@"------=====%f",brightnessValue);
        if (brightnessValue < - 1) {
-    //        [self.view addSubview:self.lightBtn];
-           NSLog(@"------====请打开");
+           self.torchBtn.hidden = false;
+//           NSLog(@"------====请打开");
         } else {
-    //        if (self.isSelectedFlashlightBtn == NO) {
-    //            [self removeFlashlightBtn];
-    //        }
-            NSLog(@"------====不用打开");
+          self.torchBtn.hidden = true;
+//            NSLog(@"------====不用打开");
         }
 }
+
+
+- (void)lightTorch:(UIButton *)torchBtn {
+    if (torchBtn.selected == false) {
+        /** 打开手电筒 */
+        AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        NSError *error = nil;
+        if ([captureDevice hasTorch]) {
+            BOOL locked = [captureDevice lockForConfiguration:&error];
+            if (locked) {
+                captureDevice.torchMode = AVCaptureTorchModeOn;
+                [captureDevice unlockForConfiguration];
+            }
+        }
+        
+        torchBtn.selected = true;
+    } else {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)),                  dispatch_get_main_queue(), ^{
+              AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+              if ([device hasTorch]) {
+                    [device lockForConfiguration:nil];
+                    [device setTorchMode: AVCaptureTorchModeOff];
+                    [device unlockForConfiguration];
+              }
+            torchBtn.selected = false;
+        });
+    }
+    
+}
+
 
 //CMSampleBufferRef转NSImage
 -(UIImage *)imageFromSampleBuffer:(CMSampleBufferRef)sampleBuffer{
@@ -326,6 +367,18 @@ float yt_sin(float angular) {
     return _ARScanView;
 }
 
+- (UIButton *)torchBtn {
+    if (_torchBtn == nil) {
+        _torchBtn = [UIButton new];
+        _torchBtn.backgroundColor = [UIColor redColor];
+        [_torchBtn setTitle:@"开灯" forState:UIControlStateNormal];
+        [_torchBtn setTitle:@"关灯" forState:UIControlStateSelected];
+        [_torchBtn addTarget:self action:@selector(lightTorch:) forControlEvents:UIControlEventTouchUpInside];
+        _torchBtn.hidden = true;
+    }
+    return _torchBtn;
+}
+
 - (AVCaptureSession *)captureSession {
     if(_captureSession == nil) {
         _captureSession = [AVCaptureSession new];
@@ -354,20 +407,25 @@ float yt_sin(float angular) {
     [self.captureSession stopRunning];
 }
 
+
 - (void)scan:(UIButton *)scanBtn {
     if (scanBtn.isSelected == true) return;
     scanBtn.selected = true;
     if (scanBtn == self.QRBtn) {
-        [self.videoDataOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
-        [self.metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-        self.ARBtn.selected = false;
+        self.isARScan = false;
+//        [self.videoDataOutput setSampleBufferDelegate:nil queue:dispatch_get_main_queue()];
+//        [self.metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
         //
+        self.ARBtn.selected = false;
         self.ARScanView.hidden = true;
         self.QRScanView.hidden = false;
         [self changeMarskLayer:true];
     } else {
-        [self.metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
-        [self.videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+        self.isARScan = true;
+//        [self.metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
+//        [self.videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+        
+        //
         self.QRBtn.selected = false;
         self.QRScanView.hidden = true;
         self.ARScanView.hidden = false;
