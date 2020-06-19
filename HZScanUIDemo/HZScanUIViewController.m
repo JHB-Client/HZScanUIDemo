@@ -155,8 +155,9 @@ float yt_sin(float angular) {
     
     [self.view addSubview:self.QRScanView];
     [self.QRScanView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_offset(150);
-        make.centerX.mas_equalTo(self.view);
+//        make.top.mas_offset(150);
+//        make.centerX.mas_equalTo(self.view);
+        make.center.mas_equalTo(self.view);
         make.size.mas_equalTo(CGSizeMake(230, 230));
     }];
     
