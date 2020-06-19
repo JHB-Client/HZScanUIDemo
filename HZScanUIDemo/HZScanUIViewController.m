@@ -34,10 +34,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setQRScanUI];
-    [self setARScanUI];
-    [self setAlphaMarkView];
-    [self setBaseUI];
+    
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusAuthorized || authStatus == AVAuthorizationStatusNotDetermined) {
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            [self setQRScanUI];
+        }else{
+            NSLog(@"手机不支持相机");
+        }
+    } else {
+        
+        UIAlertController *logoutAlter = [UIAlertController alertControllerWithTitle:@"提示" message:@"请去设置页面开通相机权限" preferredStyle:UIAlertControllerStyleAlert];
+        [logoutAlter addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        [logoutAlter addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            // 无权限 引导去开启
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }]];
+        
+        [self presentViewController:logoutAlter animated:YES completion:nil];
+    }
+//    [self setARScanUI];
+//    [self setAlphaMarkView];
+//    [self setBaseUI];
 }
 
 
@@ -66,6 +91,7 @@
         
                 CGFloat r = wh * 0.5;
                 CGPoint point0 = CGPointMake(x + (1 - sin60) * r, y + r * sin30);
+                
                 CGPoint point1 = CGPointMake(x + r, y);
                 CGPoint point2 = CGPointMake(x + (1 + sin60) * r, y + r * sin30);
                 CGPoint point3 = CGPointMake(x + (1 + sin60) * r, y + (1 + sin30) * r);
@@ -134,8 +160,9 @@ float yt_sin(float angular) {
         make.size.mas_equalTo(CGSizeMake(230, 230));
     }];
     
-    // 1、获取摄像设备
+    // 1、获取可用的摄像设备
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
     // 2、创建摄像设备输入流
     AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
     
@@ -172,6 +199,7 @@ float yt_sin(float angular) {
 //    self.videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
     [self.videoDataOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
     [self.videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+    
     [self.captureSession addOutput:self.videoDataOutput];
     
     // 6、添加摄像设备输入流到会话对象
@@ -191,6 +219,31 @@ float yt_sin(float angular) {
     
     // 9、启动会话
     [self.captureSession startRunning];
+    
+    [self setARScanUI];
+    [self setAlphaMarkView];
+    [self setBaseUI];
+}
+
+//获取可用的摄像头
+- (AVCaptureDevice *)cameroWithPosition:(AVCaptureDevicePosition)position{
+    
+    if ([[UIDevice currentDevice].systemVersion floatValue] == 10.0) {
+        AVCaptureDeviceDiscoverySession *dissession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInDuoCamera,AVCaptureDeviceTypeBuiltInTelephotoCamera,AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:position];
+        for (AVCaptureDevice *device in dissession.devices) {
+            if ([device position] == position ) {
+                return device;
+            }
+        }
+    } else {
+        NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        for (AVCaptureDevice *device in devices) {
+            if ([device position] == position) {
+                return device;
+            }
+        }
+    }
+    return nil;
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
@@ -218,14 +271,14 @@ float yt_sin(float angular) {
     UIImage *img = [self imageFromSampleBuffer:sampleBuffer];
     NSLog(@"--------------:%@", img);
     
-    [self.captureSession stopRunning];
-    if (img) {
-        UIImage *resultImg = [self yt_imageFromImage:img inRect:self.ARScanView.frame];
-        HZContentShowViewController *contentShowVCtr = [HZContentShowViewController new];
-        contentShowVCtr.contetImage = resultImg;
-        [self.navigationController pushViewController:contentShowVCtr animated:true];
-    }
-    
+//    [self.captureSession stopRunning];
+//    if (img) {
+//        UIImage *resultImg = [self yt_imageFromImage:img inRect:self.ARScanView.frame];
+//        HZContentShowViewController *contentShowVCtr = [HZContentShowViewController new];
+//        contentShowVCtr.contetImage = resultImg;
+//        [self.navigationController pushViewController:contentShowVCtr animated:true];
+//    }
+//
 }
 
 - (UIImage *)yt_imageFromImage:(UIImage *)image inRect:(CGRect)rect{
