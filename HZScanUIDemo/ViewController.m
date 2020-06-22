@@ -22,7 +22,7 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self.navigationController pushViewController:[NSClassFromString(@"HZScanUIViewController") new] animated:true];
+    [self.navigationController pushViewController:[NSClassFromString(@"HZCaptureScanViewController") new] animated:true];
 }
 
 @end

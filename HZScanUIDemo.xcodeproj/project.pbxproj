@@ -17,6 +17,9 @@
 		84AEA0F22386B1AA005C6DA3 /* IMG_9235.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 84AEA0F12386B1AA005C6DA3 /* IMG_9235.PNG */; };
 		84AEA0F523878284005C6DA3 /* HZContentShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA0F423878284005C6DA3 /* HZContentShowViewController.m */; };
 		84AEA0F82387892C005C6DA3 /* NSString+urlJudge.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEA0F72387892C005C6DA3 /* NSString+urlJudge.m */; };
+		84CB46A924A09B9D00DB3CF4 /* HZCaptureScanManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CB46A724A09B9D00DB3CF4 /* HZCaptureScanManager.m */; };
+		84CB46AC24A09C6200DB3CF4 /* HZCaptureScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CB46AB24A09C6200DB3CF4 /* HZCaptureScanViewController.m */; };
+		84CB46B224A0AA0900DB3CF4 /* HZCaptureScanMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84CB46B124A0AA0900DB3CF4 /* HZCaptureScanMarkView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,12 @@
 		84AEA0F423878284005C6DA3 /* HZContentShowViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZContentShowViewController.m; sourceTree = "<group>"; };
 		84AEA0F62387892C005C6DA3 /* NSString+urlJudge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+urlJudge.h"; sourceTree = "<group>"; };
 		84AEA0F72387892C005C6DA3 /* NSString+urlJudge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+urlJudge.m"; sourceTree = "<group>"; };
+		84CB46A724A09B9D00DB3CF4 /* HZCaptureScanManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZCaptureScanManager.m; sourceTree = "<group>"; };
+		84CB46A824A09B9D00DB3CF4 /* HZCaptureScanManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZCaptureScanManager.h; sourceTree = "<group>"; };
+		84CB46AA24A09C6200DB3CF4 /* HZCaptureScanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZCaptureScanViewController.h; sourceTree = "<group>"; };
+		84CB46AB24A09C6200DB3CF4 /* HZCaptureScanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZCaptureScanViewController.m; sourceTree = "<group>"; };
+		84CB46B024A0AA0900DB3CF4 /* HZCaptureScanMarkView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HZCaptureScanMarkView.h; sourceTree = "<group>"; };
+		84CB46B124A0AA0900DB3CF4 /* HZCaptureScanMarkView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HZCaptureScanMarkView.m; sourceTree = "<group>"; };
 		9BC8A8AAF8165577E5AE8956 /* Pods_HZScanUIDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HZScanUIDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC529E01C7517EB962F4A431 /* Pods-HZScanUIDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZScanUIDemo.release.xcconfig"; path = "Target Support Files/Pods-HZScanUIDemo/Pods-HZScanUIDemo.release.xcconfig"; sourceTree = "<group>"; };
 		FCA3FB99B72C1BB02951650B /* Pods-HZScanUIDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HZScanUIDemo.debug.xcconfig"; path = "Target Support Files/Pods-HZScanUIDemo/Pods-HZScanUIDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +100,7 @@
 		84AEA0D023861570005C6DA3 /* HZScanUIDemo */ = {
 			isa = PBXGroup;
 			children = (
+				84CB46A624A09B9D00DB3CF4 /* HZCaptureScanTool */,
 				84AEA0D123861570005C6DA3 /* AppDelegate.h */,
 				84AEA0D223861570005C6DA3 /* AppDelegate.m */,
 				84AEA0D723861570005C6DA3 /* ViewController.h */,
@@ -108,6 +118,19 @@
 				84AEA0E323861571005C6DA3 /* main.m */,
 			);
 			path = HZScanUIDemo;
+			sourceTree = "<group>";
+		};
+		84CB46A624A09B9D00DB3CF4 /* HZCaptureScanTool */ = {
+			isa = PBXGroup;
+			children = (
+				84CB46A824A09B9D00DB3CF4 /* HZCaptureScanManager.h */,
+				84CB46A724A09B9D00DB3CF4 /* HZCaptureScanManager.m */,
+				84CB46B024A0AA0900DB3CF4 /* HZCaptureScanMarkView.h */,
+				84CB46B124A0AA0900DB3CF4 /* HZCaptureScanMarkView.m */,
+				84CB46AA24A09C6200DB3CF4 /* HZCaptureScanViewController.h */,
+				84CB46AB24A09C6200DB3CF4 /* HZCaptureScanViewController.m */,
+			);
+			path = HZCaptureScanTool;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,9 +249,12 @@
 			files = (
 				84AEA0D923861570005C6DA3 /* ViewController.m in Sources */,
 				84AEA0D323861570005C6DA3 /* AppDelegate.m in Sources */,
+				84CB46AC24A09C6200DB3CF4 /* HZCaptureScanViewController.m in Sources */,
+				84CB46B224A0AA0900DB3CF4 /* HZCaptureScanMarkView.m in Sources */,
 				84AEA0E423861571005C6DA3 /* main.m in Sources */,
 				84AEA0EC2386164F005C6DA3 /* HZScanUIViewController.m in Sources */,
 				84AEA0F82387892C005C6DA3 /* NSString+urlJudge.m in Sources */,
+				84CB46A924A09B9D00DB3CF4 /* HZCaptureScanManager.m in Sources */,
 				84AEA0F523878284005C6DA3 /* HZContentShowViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
