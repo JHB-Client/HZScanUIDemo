@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)shareManager;
 - (void)startScanning;
 - (void)stopScanning;
+- (void)destroy;
 @end
 
 NS_ASSUME_NONNULL_END

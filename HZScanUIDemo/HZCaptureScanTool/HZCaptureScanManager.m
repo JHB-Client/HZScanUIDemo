@@ -230,4 +230,8 @@ static HZCaptureScanManager* _manager = nil;
     }
 }
 
+- (void)destroy {
+    _manager = nil;
+    self.outputDelegate = nil;
+}
 @end
